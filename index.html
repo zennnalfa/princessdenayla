@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>princess denayla 💖</title>
+  <style>
+    :root{
+      --bg1:#ffdde1; /* soft pink */
+      --bg2:#ee9ca7; /* rose */
+      --card:#ffffffee;
+      --accent:#ff6f91;
+      --accent-2:#ff4f7b;
+      --text:#333;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+
+    /* Dekorasi partikel hati */
+    .heart{position:fixed; left:0; top:0; pointer-events:none; will-change:transform,opacity}
+    @keyframes floatUp{
+      from{transform:translateY(100vh) scale(1); opacity:0.85}
+      to  {transform:translateY(-15vh) scale(1.6); opacity:0}
+    }
+
+    /* Kartu utama */
+    .card{
+      width:min(92vw, 560px);
+      background:var(--card);
+      border-radius:24px;
+      padding:28px 22px;
+      box-shadow:0 20px 50px rgba(0,0,0,.18);
+      position:relative;
+      z-index:5;
+      animation: pop .65s ease both;
+    }
+    @keyframes pop{from{transform:scale(.94); opacity:0} to{transform:scale(1); opacity:1}}
+
+    .title{
+      margin:0 0 8px;
+      font-size:clamp(18px, 2.2vw + 14px, 28px);
+      line-height:1.35;
+      letter-spacing:.2px;
+      text-wrap:balance;
+    }
+    .message{
+      margin:12px 0 4px;
+      font-size:clamp(16px, 1.3vw + 12px, 20px);
+      line-height:1.7;
+      min-height:120px; 
+    }
+
+    /* Progress */
+    .progress{
+      height:8px; width:100%; background:#0001; border-radius:999px; overflow:hidden; margin:14px 0 6px
+    }
+    .bar{height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2)); transition:width .35s ease}
+    .count{font-size:12px; opacity:.7}
+
+    /* Tombol */
+    .actions{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+    button{
+      appearance:none; border:0; border-radius:999px; padding:12px 18px; font-weight:600; cursor:pointer; 
+      background:var(--accent); color:white; box-shadow:0 8px 18px rgba(255,79,123,.35); transition:transform .05s ease, background .2s ease, box-shadow .2s ease
+    }
+    button:hover{background:var(--accent-2)}
+    button:active{transform:translateY(1px)}
+    .ghost{background:#fff; color:var(--accent); box-shadow:0 8px 18px rgba(0,0,0,.06); border:2px solid #ffd1dc}
+
+    /* Footer kecil */
+    .footer{margin-top:8px; font-size:12px; opacity:.6}
+
+    /* Typewriter efek */
+    .cursor{display:inline-block; width:1ch; animation:blink 1s steps(1,end) infinite}
+    @keyframes blink{50%{opacity:0}}
+
+    /* Confetti sederhana di akhir */
+    .confetti{position:fixed; inset:0; pointer-events:none; z-index:9}
+    .confetti i{position:absolute; width:8px; height:14px; background:currentColor; opacity:.9; transform:translateY(-10px); animation:drop 1200ms ease-in forwards}
+    @keyframes drop{to{transform:translateY(110vh) rotate(260deg); opacity:0}}
+
+    /* Toggle tema */
+    .theme{position:fixed; right:12px; bottom:12px; z-index:20}
+  </style>
+</head>
+<body>
+  <!-- Dekorasi background hati (dibuat via JS) -->
+
+  <main class="card" role="main" aria-live="polite">
+    <h1 class="title" id="title">Halo 👋</h1>
+
+    <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+    <div class="count" id="count">1 / 1</div>
+
+    <div class="message" id="message"></div>
+
+    <div class="actions">
+      <button id="prev" class="ghost" aria-label="Sebelumnya">⟵ Back</button>
+      <button id="next" aria-label="Berikutnya">Next ⟶</button>
+    </div>
+
+    <div class="footer">dibuat dengan kasih sayang jalpa ✨</div>
+  </main>
+
+  <button class="theme ghost" id="themeBtn" title="Ganti tema">🎨</button>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <!-- Optional: musik latar. Ganti src ke file kamu sendiri, atau hapus kalau tidak perlu. -->
+  <!-- <audio id="bgm" src="music.mp3" loop></audio> -->
+
+  <script>
+    /* =====================
+       🔧 PENGATURAN MUDAH
+       ===================== */
+    const recipientName = "Kamu"; // 
+
+    // Kumpulan pesan (boleh pakai HTML <br> untuk baris baru)
+    const slides = [
+      {
+        title: `halooo, princess denayla salsabila azzahra bunga azalea yang cantik! ><💖`,
+        text: `aku bikin ini edisi terimakasih hehe, btw btw itu nama apa kereta...panjang amat <br><b>kalau jelek maaf ya soalnya masih pemula >.< <br>tapi better lah ya daripada tulisan aku tadi :3</b>`
+      },
+      {
+        title: "btw aku punya pantun nih",
+        text: `bunga mawar mekar bersemi, cakeppppp.. <br>harumnya lembut menari-nari, cakeppppp...<br></nobr>\nkamu yang baca ini jangan lupa senyum lagi,<br>karena senyummu paling ku nanti 😊<br>eaaaaaaaaaaaaaaa <br>cakep kan pantunku, tapi cakepan kamuu sihh`
+      },
+      {
+        title: "💌",
+        text: `makasii yaa,<br>makasihhh karena kamu mau dengerin keluh kesah aku<br>terus dengerin cerita random aku<br>jangan pernah bosen yaa, aku tau kadang aku suka ngomong ga jelas >< <br>tapi kamu selalu sabar dengerin aku, makasihhh banyak! 💖`
+      },
+      {
+        title: "message for u ✨",
+        text: `kalau ada hari yang berat buat kamu....kamu harus selalu inget ya kalau kamu ga sendirian, terus kalau kamu butuh tempat bersandar, bercerita, ataupun bermain ada aku disini yang bakal nemenin kamu. terus kalau lagi down, inget ya WiFi aja kadang lost connection, tapi tetep bisa nyambung lagi. jadi jangan nyerah, kamu kan perempuan strong 💪.<br><b>semangat terus, aku percaya sama kamu! 🚀</b>`
+      },
+      {
+        title: "penyemangat akhir 🚀",
+        text: `hei kamu...iyaa kamu yg cantik, jangan suka ngeremehin diri sendiri yaa. kalau es krim aja bisa bikin orang bahagia, apalagi kamu 😏🍦.<br><b>ayo semangat, dunia butuh senyum kamu (aku juga sih butuh hehe) 🌍✨</b></b>`
+      }
+    ];
+
+    /* =====================
+       ⚙️ LOGIKA APLIKASI
+       ===================== */
+    const elTitle = document.getElementById('title');
+    const elMsg   = document.getElementById('message');
+    const elNext  = document.getElementById('next');
+    const elPrev  = document.getElementById('prev');
+    const elBar   = document.getElementById('bar');
+    const elCount = document.getElementById('count');
+    const themeBtn= document.getElementById('themeBtn');
+
+    // index slide aktif
+    let i = 0;
+
+    // efek ketik
+    async function typewriter(el, html, speed=18){
+      el.innerHTML = '';
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      const text = temp.innerText; // supaya tag <br> jadi baris benar
+      for(let j=0;j<text.length;j++){
+        el.textContent += text[j];
+        await wait(speed);
+      }
+      // setelah ketik plain text, sisipkan HTML asli agar ada <br>/<b>
+      el.innerHTML = html + ' <span class="cursor">|</span>';
+      // hilangkan cursor setelah 1.5s
+      setTimeout(()=>{ const c=el.querySelector('.cursor'); c && c.remove(); }, 1500);
+    }
+
+    function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+
+    function updateProgress(){
+      const pct = ((i+1)/slides.length)*100;
+      elBar.style.width = pct.toFixed(2)+'%';
+      elCount.textContent = `${i+1} / ${slides.length}`;
+    }
+
+    async function show(){
+      const s = slides[i];
+      elTitle.textContent = s.title;
+      await typewriter(elMsg, s.text);
+      updateProgress();
+      elPrev.disabled = (i===0);
+      elNext.textContent = (i===slides.length-1) ? 'Selesai ✨' : 'Next ⟶';
+    }
+
+    function next(){
+      if(i < slides.length-1){
+        i++; show();
+        if(i===slides.length-1){
+          celebrate();
+        }
+      } else {
+        celebrate(1); // ekstra confetti
+        pulseButton(elNext);
+      }
+    }
+
+    function prev(){
+      if(i>0){i--; show();}
+    }
+
+    elNext.addEventListener('click', next);
+    elPrev.addEventListener('click', prev);
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight' || e.key==='Enter') next();
+      if(e.key==='ArrowLeft') prev();
+    });
+
+    // Partikel hati background
+    const COLORS = ['#ff4f7b','#ff6f91','#f9a8d4','#f472b6','#fb7185'];
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.className='heart';
+      h.textContent='❤';
+      const size = 14 + Math.random()*18;
+      h.style.fontSize = size+'px';
+      h.style.color = COLORS[Math|Math.random()*COLORS.length];
+      h.style.left = (Math.random()*100)+'vw';
+      const dur = 3500 + Math.random()*2500;
+      h.style.animation = `floatUp ${dur}ms linear forwards`;
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(), dur);
+    }
+    setInterval(spawnHeart, 500);
+
+    // Confetti sederhana saat akhir
+    const cvs = document.getElementById('confetti');
+    const ctx = cvs.getContext('2d');
+    function resize(){cvs.width=innerWidth; cvs.height=innerHeight}
+    addEventListener('resize', resize); resize();
+
+    function celebrate(mult=1){
+      const n = 120*mult;
+      for(let k=0;k<n;k++){
+        setTimeout(()=>piece(), Math.random()*600);
+      }
+    }
+    function piece(){
+      const i = document.createElement('i');
+      i.style.left = Math.random()*100+'vw';
+      i.style.top  = '-20px';
+      i.style.color = COLORS[Math|Math.random()*COLORS.length];
+      i.style.transform = `rotate(${Math.random()*360}deg)`;
+      i.style.animationDuration = 800 + Math.random()*900 + 'ms';
+      document.getElementById('confetti').appendChild(i);
+      setTimeout(()=>i.remove(), 2000);
+    }
+
+    // Tema cepat (ganti palet warna)
+    const THEMES = [
+      ['#ffdde1','#ee9ca7','#ff6f91','#ff4f7b'], // pink soft
+      ['#c2e9fb','#a1c4fd','#6c8cff','#4f46e5'], // biru ungu
+      ['#fdfbfb','#ebedee','#ff8fab','#ff4d6d'], // putih kemerahan
+      ['#f6d365','#fda085','#ff8e53','#fe6b8b']  // senja
+    ];
+    let themeIndex = 0;
+    function applyTheme(t){
+      document.documentElement.style.setProperty('--bg1', t[0]);
+      document.documentElement.style.setProperty('--bg2', t[1]);
+      document.documentElement.style.setProperty('--accent', t[2]);
+      document.documentElement.style.setProperty('--accent-2', t[3]);
+    }
+    themeBtn.addEventListener('click',()=>{
+      themeIndex = (themeIndex+1)%THEMES.length; applyTheme(THEMES[themeIndex]);
+      pulseButton(themeBtn);
+    });
+
+    function pulseButton(btn){
+      btn.animate([
+        {transform:'scale(1)'},
+        {transform:'scale(1.06)'},
+        {transform:'scale(1)'}
+      ],{duration:260, easing:'ease-out'});
+    }
+
+    // Autoplay bgm (opsional) – beberapa browser perlu interaksi user dulu
+    // const bgm = document.getElementById('bgm');
+    // document.addEventListener('click', ()=>{ if(bgm && bgm.paused) bgm.play().catch(()=>{}); }, {once:true});
+
+    // Start!
+    show();
+  </script>
+</body>
+</html>
